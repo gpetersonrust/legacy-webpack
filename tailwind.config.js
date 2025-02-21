@@ -1,5 +1,10 @@
 const { file_path } = require("./library/constants/global");
 const fg = require('fast-glob');
+const { typography_components } = require("./tailwind/typography,");
+const { container_utilities } = require("./tailwind/container");
+const { site_utities } = require("./tailwind/shadows");
+const { gap_utilities } = require("./tailwind/gaps");
+const { safe_list } = require("./tailwind/options");
 
 const phpFilesPattern = "**/*.php"; // The glob pattern to find PHP files recursively
 
@@ -12,6 +17,7 @@ const phpFiles = fg.sync(phpFilesPattern, {
 module.exports = {
   mode: 'jit',
   content: phpFiles, // Set the content property to include the found PHP files
+   safelist:  safe_list,
 
   theme: {
     extend: {
@@ -30,4 +36,10 @@ module.exports = {
       },
     },
   },
+  plugins: [
+    typography_components, container_utilities, site_utities,
+    gap_utilities,
+    // Add typography components plugin
+  ],
 };
+
