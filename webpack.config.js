@@ -1,10 +1,11 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { MODE } = require('./library/constants/global');
+const { MODE, dynamic_hash } = require('./library/constants/global');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
  
 
+  let hash = dynamic_hash.non;
 module.exports = {
   mode: MODE,
   entry: {
@@ -16,8 +17,8 @@ module.exports = {
     path: path.resolve(__dirname.replace('webpack', ''), 'dist'),
     filename: ({ chunk: name }) => {
       return name === 'main'
-        ? '[name]-wp[fullhash].js'
-        : '[name]/[name]-wp[fullhash].js';
+        ? `[name]${hash}.js`
+        : `[name]/[name]${hash}.js`;
     },
     clean: true,
   },
@@ -33,11 +34,14 @@ module.exports = {
         ],
       },
       {
-        test: /.js$/,
+        test: /\.(js|jsx)$/, // Ensure both .js and .jsx files are processed
         exclude: /node_modules/,
         use: 'babel-loader',
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'], // Allow imports without specifying .jsx extension
   },
   optimization: {
     minimize: true,
@@ -50,8 +54,8 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: ({ chunk: { name } }) => {
         return name === 'main'
-          ? '[name]-wp[fullhash].css'
-          : '[name]/[name]-wp[fullhash].css';
+          ? `[name]${hash}.css`
+          : `[name]/[name]${hash}.css`;
       },
     }),
   ],

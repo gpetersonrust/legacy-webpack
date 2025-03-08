@@ -9,7 +9,11 @@ module.exports = {
     webpack_dir: parent_dir + 'webpack/',
     dist_dir : parent_dir +  'dist',
     MODE: 'production', 
-    hash_php_file:  parent_dir + 'utilities/correct_hash.php',
+    hash_php_file: parent_dir + 'utilities/correct_hash.php',
+    dynamic_hash: {
+        "dynamic": "-wp[fullhash]",
+        "non": ""
+    }
 }
 
  
