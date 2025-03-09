@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom/client'; // Use React 18 API
 import App from '../../components/App';
 
 // Get root element
-const rootElement = document.getElementById('roots');
+const rootElement = document.getElementById('root');
 
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(<App />);
-} else {
-  alert('Root element not found');
-}
+// if (rootElement) {
+//   const root = ReactDOM.createRoot(rootElement);
+//   root.render(<App />);
+// } else {
+//   alert('Root element not found');
+// }
  

@@ -1,29 +1,48 @@
 const gulp = require('gulp');
-const browserSync = require('browser-sync');
+const browserSync = require('browser-sync').create();
 const { file_path } = require('./library/constants/global');
-const fg = require('fast-glob');
 
-// Use fast-glob to find files matching the specified patterns
-const paths = fg.sync([
-  `${file_path}/**/*.scss`,
-  `${file_path}/**/*.css`,
-  `${file_path}/**/*.php`,
-  `${file_path}/**/*.js`,
-], {
-  ignore: ['node_modules', 'dist', '.git'],
-});
+// ✅ Set your local WordPress domain (NO PROXY)
+const localDomain = "http://darker-than-blood-series.local/";
 
-const proxy = "https://fly-knoxville-mcgee-tyson.local/";
+// ✅ File paths to watch
+const paths = {
+  php: `${file_path}/**/*.php`,
+  css: `${file_path}/**/*.css`,
+  scss: `${file_path}/**/*.scss`,
+  js: `${file_path}/**/*.js`
+};
 
-function watch() {
+// ✅ BrowserSync Task (Directly Reload `.local`)
+function watchFiles() {
   browserSync.init({
-    proxy,
+    // Don't use proxy
+    proxy: false,
+    // Use snippet mode
+    snippet: true,
+    // Open this URL when starting
+    urls: {
+      local: "http://darker-than-blood-series.local/t"
+    },
     port: 800,
+    // You can open specific paths
+    startPath: "/components/your-component",
+    // Add notify: false if you don't want the browserSync notification
+    notify: true
   });
 
-  gulp.watch(paths).on('change', (path) => {
-    browserSync.reload();
+  // ✅ Watch PHP files → Full Page Reload
+  gulp.watch(paths.php).on('change', browserSync.reload);
+
+  // ✅ Watch JS files → Inject JS Changes (or Reload if Needed)
+  gulp.watch(paths.js).on('change', browserSync.reload);
+
+  // ✅ Watch SCSS & CSS → Inject Styles Without Reload
+  gulp.watch([paths.css, paths.scss], (done) => {
+    browserSync.reload("*.css");
+    done();
   });
 }
 
-exports.default = watch;
+// ✅ Default Gulp Task
+exports.default = watchFiles;

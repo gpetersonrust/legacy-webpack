@@ -5,12 +5,13 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
  
 
-  let hash = dynamic_hash.non;
+  let hash = dynamic_hash.dynamic;
 module.exports = {
   mode: MODE,
   entry: {
     app: path.resolve(__dirname, 'src', 'app', 'js', 'app.js'),
     ['relationships-builders']: path.resolve(__dirname, 'src', 'app', 'js', 'app.js'),
+ 
   },
   output: {
     publicPath: '/',
