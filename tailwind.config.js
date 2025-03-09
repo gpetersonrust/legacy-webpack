@@ -1,10 +1,7 @@
 const path = require("path");
 const { file_path } = require("./library/constants/global");
 const fg = require('fast-glob');
-const { typography_components } = require("./tailwind/typography,");
-const { container_utilities } = require("./tailwind/container");
  
-const { gap_utilities } = require("./tailwind/gaps");
 const { safe_list } = require("./tailwind/options");
 const { typography_utilities } = require("./tailwind/typography");
 const { spacing_utilities } = require("./tailwind/spacing");
@@ -13,20 +10,19 @@ const { button_utilities } = require("./tailwind/buttons");
  
 
 const phpFilesPattern = "**/*.php"; // The glob pattern to find PHP files recursively
-
-// Use fast-glob to find PHP files
-const phpFiles = fg.sync(phpFilesPattern, {
-  ignore: ["node_modules", "dist", ".git"],
-  cwd: file_path, // The base directory where the search starts
-});
-
+ 
+ 
+ 
 module.exports = {
   mode: "jit",
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", // ✅ React components
-    ...phpFiles.map((file) => path.join(file_path, file)), // ✅ Add all PHP files
+    '../**/*.php', // ✅ Add all PHP files
   ],
-  safelist: safe_list,
+  safelist: [
+    'brand-button',
+    'brand-button-primary',
+  ],
 
   theme: {
     extend: {

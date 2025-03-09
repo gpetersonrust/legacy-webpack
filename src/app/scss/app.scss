@@ -2,12 +2,91 @@
 @use 'tailwindcss/base';
 @use 'tailwindcss/components';
 @use 'tailwindcss/utilities';
+@use './variables.scss';
+@use './accordion.scss';
+@use './header.scss';
+@use './timeline.scss';
+ 
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 
 * , body{
   // reset margin and padding
   margin: 0;
   padding: 0;
+  @apply font-body;
  
 
+  
+
+  
 }
 
+.component-container{
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Section Header Styling (for overarching story titles)
+.section-header {
+  font-family: "Merriweather", serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1C2331; // Darker Than Blood Branding Dark Blue
+  text-align: left;
+  margin-bottom: 24px;
+  padding: 16px 0;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+
+ 
+// Responsive Tweaks
+@media (max-width: 768px) {
+  .section-header {
+      font-size: 28px;
+      text-align: center;
+  }
+
+  .season-title {
+      font-size: 20px;
+  }
+}
+
+
+.sortable-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  .draggable-item {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s ease-in-out, opacity 0.3s ease-in-out;
+      width: 250px;
+      cursor: grab;
+
+      &:hover {
+          transform: scale(1.05);
+          box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active {
+          cursor: grabbing;
+      }
+
+      &.dragging {
+          opacity: 0.5;
+          transform: scale(1.1);
+      }
+  }
+}

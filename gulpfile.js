@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const exec = require('child_process').exec;
 const browserSync = require('browser-sync').create();
 const { file_path } = require('./library/constants/global');
 
@@ -7,11 +8,18 @@ const localDomain = "http://darker-than-blood-series.local/";
 
 // ✅ File paths to watch
 const paths = {
-  php: `${file_path}/**/*.php`,
-  css: `${file_path}/**/*.css`,
-  scss: `${file_path}/**/*.scss`,
-  js: `${file_path}/**/*.js`
+  php: `../**/*.php`,
+  css: `../**/*.css`,
+  scss: `../**/*.scss`,
+  js: `../**/*.js`
 };
+function runWebpack(cb) { // ✅ Run Webpack
+  exec('npm run build', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+}
 
 // ✅ BrowserSync Task (Directly Reload `.local`)
 function watchFiles() {
@@ -22,7 +30,7 @@ function watchFiles() {
     snippet: true,
     // Open this URL when starting
     urls: {
-      local: "http://darker-than-blood-series.local/t"
+      local: "http://darker-than-blood-series.local/"
     },
     port: 800,
     // You can open specific paths
@@ -34,14 +42,9 @@ function watchFiles() {
   // ✅ Watch PHP files → Full Page Reload
   gulp.watch(paths.php).on('change', browserSync.reload);
 
-  // ✅ Watch JS files → Inject JS Changes (or Reload if Needed)
-  gulp.watch(paths.js).on('change', browserSync.reload);
-
-  // ✅ Watch SCSS & CSS → Inject Styles Without Reload
-  gulp.watch([paths.css, paths.scss], (done) => {
-    browserSync.reload("*.css");
-    done();
-  });
+  // run webpack
+  runWebpack();
+  
 }
 
 // ✅ Default Gulp Task
