@@ -2,7 +2,7 @@
 @use 'tailwindcss/base';
 @use 'tailwindcss/components';
 @use 'tailwindcss/utilities';
-@use './variables.scss';
+ 
 @use './accordion.scss';
 @use './header.scss';
 @use './timeline.scss';
@@ -17,11 +17,18 @@
   padding: 0;
   @apply font-body;
  
+ 
+ 
 
-  
-
-  
+ 
 }
+
+.btn {
+  @apply bg-app-primary text-white font-bold py-2 px-4 rounded;
+  padding: 1rem 3rem;
+}
+
+
 
 .component-container{
   min-height: 100vh;

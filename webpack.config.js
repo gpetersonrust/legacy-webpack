@@ -1,17 +1,18 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { MODE, dynamic_hash } = require('./library/constants/global');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
- 
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const webpack = require('webpack');
+const { MODE, dynamic_hash } = require('./library/constants/global');
 
-  let hash = dynamic_hash.dynamic;
+let hash = dynamic_hash.dynamic;
+
 module.exports = {
   mode: MODE,
   entry: {
     app: path.resolve(__dirname, 'src', 'app', 'js', 'app.js'),
     ['relationships-builders']: path.resolve(__dirname, 'src', 'app', 'js', 'app.js'),
- 
   },
   output: {
     publicPath: '/',
@@ -26,23 +27,23 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.scss$/,
+        test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          MODE === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           'sass-loader',
         ],
       },
       {
-        test: /\.(js|jsx)$/, // Ensure both .js and .jsx files are processed
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: 'babel-loader',
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'], // Allow imports without specifying .jsx extension
+    extensions: ['.js', '.jsx'],
   },
   optimization: {
     minimize: true,
@@ -59,6 +60,8 @@ module.exports = {
           : `[name]/[name]${hash}.css`;
       },
     }),
+ 
   ],
+  
   devtool: 'source-map',
 };
